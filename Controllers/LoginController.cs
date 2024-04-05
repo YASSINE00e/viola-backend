@@ -21,7 +21,6 @@ namespace Viola.Controllers
             try
             {
                 string query = @"select * from caregiver where phone = @Phone";
-                Boolean success = false;
                 string sqlDataSource = _configuration.GetConnectionString("ViolaDBCon");
 
                 using (MySqlConnection cnn = new MySqlConnection(sqlDataSource))
@@ -32,20 +31,20 @@ namespace Viola.Controllers
                         cmd.Parameters.Add("@Phone", MySqlDbType.String).Value = caregiver.Phone;
                         using (MySqlDataReader myReader = cmd.ExecuteReader())
                         {
-                            if (myReader.Read() && caregiver.Password == Convert.ToString(myReader["password"]))
+                            if (myReader.Read())
                             {
-                                success = true;
-                                return Ok(success); // 200 (OK)
-                            }
-                            else if (myReader.Read())
-                            {
-
-                                return StatusCode(401, "Incorrect Password");   // 401 (Unauthorized)
+                                if (caregiver.Password == Convert.ToString(myReader["password"]))
+                                {
+                                    return Ok("Login"); // 200 (OK)
+                                }
+                                else
+                                {
+                                    return Unauthorized("Incorrect Password");   // 401 (Unauthorized)
+                                }
                             }
                             else
                             {
-                                return StatusCode(404, "User Not Found");   // 404 (Not Found)
-
+                                return NotFound("User Not Found");   // 404 (Not Found)
                             }
                         }
                     }
