@@ -7,15 +7,59 @@ namespace Viola.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class RegistrationController : ControllerBase
+    public class AuthController : ControllerBase
     {
         private readonly IConfiguration _configuration;
-        public RegistrationController(IConfiguration configuration)
+        public AuthController(IConfiguration configuration)
         {
             _configuration = configuration;
         }
 
         [HttpPost]
+        [Route("Login")]
+        public IActionResult Login(Caregiver caregiver)
+        {
+            try
+            {
+                string query = @"select * from caregiver where phone = @Phone";
+                string sqlDataSource = _configuration.GetConnectionString("ViolaDBCon");
+
+                using (MySqlConnection cnn = new MySqlConnection(sqlDataSource))
+                {
+                    cnn.Open();
+                    using (MySqlCommand cmd = new MySqlCommand(query, cnn))
+                    {
+                        cmd.Parameters.Add("@Phone", MySqlDbType.String).Value = caregiver.Phone;
+                        using (MySqlDataReader myReader = cmd.ExecuteReader())
+                        {
+                            if (myReader.Read())
+                            {
+                                if (caregiver.Password == Convert.ToString(myReader["password"]))
+                                {
+                                    return Ok("Login"); // 200 (OK)
+                                }
+                                else
+                                {
+                                    return Unauthorized("Incorrect Password");   // 401 (Unauthorized)
+                                }
+                            }
+                            else
+                            {
+                                return NotFound("User Not Found");   // 404 (Not Found)
+                            }
+                        }
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message); // 500 (Internal Server Error)
+            }
+        }
+
+        [HttpPost]
+        [Route("Registration")]
         public IActionResult Registration(Caregiver caregiver)
         {
             try
