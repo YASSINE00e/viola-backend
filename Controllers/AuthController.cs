@@ -17,7 +17,7 @@ namespace Viola.Controllers
 
         [HttpPost]
         [Route("Login")]
-        public IActionResult Login(Caregiver caregiver)
+        public IActionResult Login(LoginApiModel caregiver)
         {
             try
             {
@@ -36,16 +36,16 @@ namespace Viola.Controllers
                             {
                                 if (caregiver.Password == Convert.ToString(myReader["password"]))
                                 {
-                                    return Ok("Login"); // 200 (OK)
+                                    return Ok(new { status = 200, message = "Login" }); // 200 (OK)
                                 }
                                 else
                                 {
-                                    return Unauthorized("Incorrect Password");   // 401 (Unauthorized)
+                                    return Unauthorized(new { status = 401, message = "Incorrect Password" });   // 401 (Unauthorized)
                                 }
                             }
                             else
                             {
-                                return NotFound("User Not Found");   // 404 (Not Found)
+                                return NotFound(new { status = 404, message = "User Not Found" });   // 404 (Not Found)
                             }
                         }
                     }
@@ -54,22 +54,36 @@ namespace Viola.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, ex.Message); // 500 (Internal Server Error)
+                return StatusCode(500, new { message = ex.Message }); // 500 (Internal Server Error)
             }
         }
 
         [HttpPost]
         [Route("Registration")]
-        public IActionResult Registration(Caregiver caregiver)
+        public IActionResult Registration(RegistrationApiModel caregiver)
         {
             try
             {
-                string query = @"INSERT INTO caregiver (Name, Surname, Phone, Mail, Password)
-                     VALUES (@CaregiverName, @CaregiverSurname, @CaregiverPhone, @CaregiverMail, @CaregiverPassword)";
+                
                 string sqlDataSource = _configuration.GetConnectionString("ViolaDBCon");
-
                 using (MySqlConnection cnn = new MySqlConnection(sqlDataSource))
                 {
+                    string checkQuery = @"SELECT COUNT(*) FROM caregiver WHERE Phone = @CaregiverPhone";
+                    using (MySqlCommand checkCmd = new MySqlCommand(checkQuery, cnn))
+                    {
+                        checkCmd.Parameters.Add("@CaregiverPhone", MySqlDbType.VarChar).Value = caregiver.Phone;
+                        cnn.Open();
+                        int existingAccounts = Convert.ToInt32(checkCmd.ExecuteScalar());
+                        cnn.Close();
+
+                        if (existingAccounts > 0)
+                        {
+                            // Account already exists
+                            return StatusCode(409, new { status = 409, message = "Account already exists" }); // 409 (Conflict)
+                        }
+                    }
+                    string query = @"INSERT INTO caregiver (Name, Surname, Phone, Mail, Password)
+                     VALUES (@CaregiverName, @CaregiverSurname, @CaregiverPhone, @CaregiverMail, @CaregiverPassword)";
                     using (MySqlCommand cmd = new MySqlCommand(query, cnn))
                     {
                         cmd.Parameters.Add("@CaregiverName", MySqlDbType.VarChar).Value = caregiver.Name;
@@ -82,11 +96,11 @@ namespace Viola.Controllers
                         cnn.Close();
                     }
                 }
-                return Ok(); // 200 (OK)
+                return Ok(new { status = 200, message = "Signup" }); // 200 (OK)
             }
             catch (Exception ex)
             {
-                return StatusCode(500, ex.Message); // 500 (Internal Server Error)
+                return StatusCode(500, new { message = ex.Message }); // 500 (Internal Server Error)
             }
         }
     }
