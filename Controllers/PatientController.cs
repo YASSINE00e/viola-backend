@@ -157,5 +157,33 @@ namespace Viola.Controllers
             }
 
         }
+
+        [HttpPost]
+        [Route("RemovePatient")]
+        public IActionResult RemovePatient(RemovePatientApiModel patient)
+        {
+            try
+            {
+                string sqlDataSource = _configuration.GetConnectionString("ViolaDBCon");
+                using (MySqlConnection cnn = new MySqlConnection(sqlDataSource))
+                {
+                    cnn.Open();
+                    string query = @"DELETE FROM relation WHERE idCaregiver = @idCaregiver AND ViolaId = @ViolaId";
+                    using (MySqlCommand cmd = new MySqlCommand(query, cnn))
+                    {
+                        cmd.Parameters.Add("@idCaregiver", MySqlDbType.Int32).Value = patient.caregiverId;
+                        cmd.Parameters.Add("@ViolaId", MySqlDbType.Int32).Value = patient.ViolaId;
+                        cmd.ExecuteNonQuery();
+                    }
+                    cnn.Close();
+                }
+                return Ok(new { status = 200, message = "Removed Successfully" }); // 200 (OK)
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = ex.Message }); // 500 (Internal Server Error)
+            }
+
+        }
     }
 }
