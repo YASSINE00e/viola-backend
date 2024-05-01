@@ -52,7 +52,68 @@ namespace Viola.Controllers
             }
         }
 
+        [HttpPost]
+        [Route("CheckViolaId")]
+        public IActionResult CheckViolaId(CheckViolaIdApiModel patient)
+        {
+            try
+            {
+                int patientCount = 0;
+                int relationCount = 0;
+                string sqlDataSource = _configuration.GetConnectionString("ViolaDBCon");
+                using (MySqlConnection cnn = new MySqlConnection(sqlDataSource))
+                {
+                    cnn.Open();
+                    string ViolaIdQuery = @"SELECT COUNT(*) FROM patient WHERE ViolaId = @ViolaId";
+                    using (MySqlCommand cmd = new MySqlCommand(ViolaIdQuery, cnn))
+                    {
+                        cmd.Parameters.Add("@ViolaId", MySqlDbType.Int32).Value = patient.ViolaId;
+                        var result = cmd.ExecuteScalar();
+                        patientCount = Convert.ToInt32(result);
 
+                    }
+
+                    if (patientCount == 0)
+                    {
+                        return Ok(new { status = 200, message = "New patient" }); // 200 (OK)
+                    }
+                    else
+                    {
+                        string RelationQuery = @"SELECT COUNT(*) FROM relation WHERE ViolaId = @ViolaId AND idCaregiver = @idCaregiver";
+                        using (MySqlCommand cmd = new MySqlCommand(RelationQuery, cnn))
+                        {
+                            cmd.Parameters.Add("@ViolaId", MySqlDbType.Int32).Value = patient.ViolaId;
+                            cmd.Parameters.Add("@idCaregiver", MySqlDbType.Int32).Value = patient.caregiverId;
+                            var result = cmd.ExecuteScalar();
+                            relationCount = Convert.ToInt32(result);
+
+                        }
+                        if (relationCount == 0)
+                        {
+                            string relationQuery = @"INSERT INTO relation (idCaregiver, ViolaId) VALUES (@idCaregiver, @ViolaId)";
+                            using (MySqlCommand cmd = new MySqlCommand(relationQuery, cnn))
+                            {
+                                cmd.Parameters.Add("@idCaregiver", MySqlDbType.Int32).Value = patient.caregiverId;
+                                cmd.Parameters.Add("@ViolaId", MySqlDbType.Int32).Value = patient.ViolaId;
+                                cmd.ExecuteNonQuery();
+                            }
+                            return Ok(new { status = 201, message = "Added Successfully" }); // 201 (OK)
+                        }
+
+                    }
+                    cnn.Close();
+                    return Ok(new { status = 409, message = "Patient already exists" }); // 409(Conflict)
+
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = ex.Message }); // 500 (Internal Server Error)
+            }
+
+        }
 
         [HttpPost]
         [Route("AddPatient")]
