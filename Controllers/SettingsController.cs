@@ -82,7 +82,7 @@ namespace Viola.Controllers
                         cmd.Parameters.Add("@CaregiverSurname", MySqlDbType.VarChar).Value = caregiver.Surname;
                         cmd.Parameters.Add("@CaregiverPhone", MySqlDbType.VarChar).Value = caregiver.Phone;
                         cmd.Parameters.Add("@CaregiverMail", MySqlDbType.VarChar).Value = caregiver.Mail;
-                        cmd.Parameters.Add("@CaregiverPassword", MySqlDbType.VarChar).Value = caregiver.Password;
+                        cmd.Parameters.Add("@CaregiverPassword", MySqlDbType.VarChar).Value = caregiver.Password;           
                         cmd.ExecuteNonQuery();
                     }
                     cnn.Close();
@@ -96,6 +96,32 @@ namespace Viola.Controllers
 
         }
 
+        [Route("DeleteUser")]
+        [HttpPost]
+        public IActionResult DeleteUser(int id)
+        {
+            try
+            {
+                string query = @"delete from caregiver where idCareGiver = @CaregiverId";
+                string sqlDataSource = _configuration.GetConnectionString("ViolaDBCon");
+                Console.WriteLine("kjhv");
+                using (MySqlConnection cnn = new MySqlConnection(sqlDataSource))
+                {
+                    cnn.Open();
+                    using (MySqlCommand cmd = new MySqlCommand(query, cnn))
+                    {
+                        cmd.Parameters.Add("@CaregiverId", MySqlDbType.Int32).Value = id;
+                        cmd.ExecuteNonQuery();
+                    }
+                    cnn.Close();
+                }
+                return Ok(new { status = 200, message = "Deleted Successfully" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
 
+        }
     }
 }
