@@ -52,6 +52,52 @@ namespace Viola.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("GetPatientsData")]
+        public IActionResult GetPatientsData(int id)
+        {
+            try
+            {
+                GetPatientsDataApiModel patient = new GetPatientsDataApiModel();
+                string query = @"select * from patient where ViolaId = @PatientsId";
+                string sqlDataSource = _configuration.GetConnectionString("ViolaDBCon");
+
+                using (MySqlConnection cnn = new MySqlConnection(sqlDataSource))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand(query, cnn))
+                    {
+                        cmd.Parameters.Add("@PatientsId", MySqlDbType.Int32).Value = id;
+                        cnn.Open();
+                        using (MySqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                patient.Name = reader["Name"].ToString();
+                                patient.Surname = reader["Surname"].ToString();
+                                patient.Age = Convert.ToInt32(reader["Age"]);
+                                patient.HouseLocation = reader[ "HouseLocation"].ToString();
+                                patient.BloodType = reader["BloodType"].ToString();
+                                patient.Weight = Convert.ToInt32(reader["Weight"]);
+                            }
+                        }
+                        cnn.Close();
+                    }
+                }
+                if (patient != null)
+                {
+                    return Ok(new { status = 200, data = patient });
+                }
+                else
+                {
+                    return NotFound(new { status = 404, data = patient });
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
         [HttpPost]
         [Route("CheckViolaId")]
         public IActionResult CheckViolaId(CheckViolaIdApiModel patient)
