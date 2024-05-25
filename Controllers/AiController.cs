@@ -1,7 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using OpenAI_API;
-using OpenAI_API.Completions;
+﻿using Microsoft.AspNetCore.Mvc;
+using Mscc.GenerativeAI;
 using Viola.Models;
 
 namespace Viola.Controllers
@@ -9,45 +7,42 @@ namespace Viola.Controllers
     [Route("api/[controller]")]
     [ApiController]
     public class AiController : ControllerBase
-    {/*
+    {
         [HttpPost]
-        public async Task<IActionResult> Analysis(Patient patient)
+        [Route("Analysis")]
+        public async Task<IActionResult> Analysis(AnalysisApiModel patient)
         {
-            string prompt = $"I'm a {patient.Age}-year-old person, my movement is {patient.Mv}, and my heart rate is {patient.Hm}. Give me a small analysis of my body situation in a maximum of 15 words.";
-            string answer = string.Empty;
-            var openai = new OpenAIAPI("sk - JsNWZkygoR5L61pddFHjT3BlbkFJSrJ8Pgsr17ateSHXrAIY");
-            CompletionRequest completion = new CompletionRequest();
-            completion.Prompt = prompt;
-            completion.Model = OpenAI_API.Models.Model.DavinciText;
-            completion.MaxTokens = 200;
 
-            var result = openai.Completions.CreateCompletionsAsync(completion);
-            foreach (var item in result.Result.Completions)
-            {
-                answer = item.Text;
-            }
-            return Ok(answer);
-        }*/
 
-        [HttpPost]
+            string prompt = $"I'm a {patient.Age}-year-old person, my movement is {patient.Movement}, and my heart rate is {patient.HeartRate}. Give me a small analysis of my body situation in a maximum of 15 words.";
+            var apiKey = "AIzaSyCb0ioR3CfdSj8wsKSC0Hq1KVBKTkjdjsU";
+            var genAi = new GoogleAI(apiKey);
+            var model = genAi.GenerativeModel(Mscc.GenerativeAI.Model.GeminiPro);
+            var quote = await model.GenerateContent(prompt);
+            var candidates = quote.Candidates[0];
+            var response = candidates.Content.Text.Split("\n", 2)[0];
+            
+
+            return Ok(new {status = 200, res = response });
+        }
+
+
+        [HttpGet]
+        [Route("Quote")]
         public async Task<IActionResult> Quote()
         {
             try
             {
                 string prompt = "Give me a quote/information about Alzheimer's";
-                string answer = string.Empty;
-                var openai = new OpenAIAPI("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");
-                CompletionRequest completion = new CompletionRequest();
-                completion.Prompt = prompt;
-                completion.Model = OpenAI_API.Models.Model.DavinciText;
-                completion.MaxTokens = 200;
-                var result = await openai.Completions.CreateCompletionsAsync(completion);
-                if (result?.Completions != null && result.Completions.Any())
-                {
-                    answer = result.Completions.First().Text;
-                }
+                var apiKey = "AIzaSyCb0ioR3CfdSj8wsKSC0Hq1KVBKTkjdjsU";
+                var genAi = new GoogleAI(apiKey);
+                var model = genAi.GenerativeModel(Mscc.GenerativeAI.Model.GeminiPro);
+                var quote = await model.GenerateContent(prompt);
+                var candidates = quote.Candidates[0];
+                var lines = candidates.Content.Text.Split("\n", 2);
+                string response = lines.Length > 0 ? lines[0].Replace("**Quote:**", "").Trim() : "";
+                return Ok(new { status = 200, res = response });
 
-                return Ok(answer);
             }
             catch (Exception ex)
             {
