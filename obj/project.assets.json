@@ -311,6 +311,22 @@
           }
         }
       },
+      "Mscc.GenerativeAI/1.5.0": {
+        "type": "package",
+        "dependencies": {
+          "System.Text.Json": "8.0.3"
+        },
+        "compile": {
+          "lib/net7.0/Mscc.GenerativeAI.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net7.0/Mscc.GenerativeAI.dll": {
+            "related": ".xml"
+          }
+        }
+      },
       "MySql.Data/8.3.0": {
         "type": "package",
         "dependencies": {
@@ -744,7 +760,7 @@
           }
         }
       },
-      "System.Text.Encodings.Web/7.0.0": {
+      "System.Text.Encodings.Web/8.0.0": {
         "type": "package",
         "compile": {
           "lib/net7.0/System.Text.Encodings.Web.dll": {
@@ -766,10 +782,10 @@
           }
         }
       },
-      "System.Text.Json/7.0.1": {
+      "System.Text.Json/8.0.3": {
         "type": "package",
         "dependencies": {
-          "System.Text.Encodings.Web": "7.0.0"
+          "System.Text.Encodings.Web": "8.0.0"
         },
         "compile": {
           "lib/net7.0/System.Text.Json.dll": {
@@ -1408,6 +1424,30 @@
         "runtimes/win/lib/netcoreapp3.0/Microsoft.Win32.SystemEvents.xml",
         "useSharedDesignerContext.txt",
         "version.txt"
+      ]
+    },
+    "Mscc.GenerativeAI/1.5.0": {
+      "sha512": "Sk8zE7xhQuA/4LhKprhuIFV3mkfBx87JOmPv2vK4pT/kpvKv42Ky8qx1SI7GrTI9BZGyxWAt7dmfuHHdeYv0LQ==",
+      "type": "package",
+      "path": "mscc.generativeai/1.5.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE",
+        "MsccGenerativeAi-icon-nuget.png",
+        "README.md",
+        "lib/net472/Mscc.GenerativeAI.dll",
+        "lib/net472/Mscc.GenerativeAI.xml",
+        "lib/net6.0/Mscc.GenerativeAI.dll",
+        "lib/net6.0/Mscc.GenerativeAI.xml",
+        "lib/net7.0/Mscc.GenerativeAI.dll",
+        "lib/net7.0/Mscc.GenerativeAI.xml",
+        "lib/net8.0/Mscc.GenerativeAI.dll",
+        "lib/net8.0/Mscc.GenerativeAI.xml",
+        "lib/netstandard2.0/Mscc.GenerativeAI.dll",
+        "lib/netstandard2.0/Mscc.GenerativeAI.xml",
+        "mscc.generativeai.1.5.0.nupkg.sha512",
+        "mscc.generativeai.nuspec"
       ]
     },
     "MySql.Data/8.3.0": {
@@ -2411,10 +2451,10 @@
         "version.txt"
       ]
     },
-    "System.Text.Encodings.Web/7.0.0": {
-      "sha512": "OP6umVGxc0Z0MvZQBVigj4/U31Pw72ITihDWP9WiWDm+q5aoe0GaJivsfYGq53o6dxH7DcXWiCTl7+0o2CGdmg==",
+    "System.Text.Encodings.Web/8.0.0": {
+      "sha512": "yev/k9GHAEGx2Rg3/tU6MQh4HGBXJs70y7j1LaM1i/ER9po+6nnQ6RRqTJn1E7Xu0fbIFK80Nh5EoODxrbxwBQ==",
       "type": "package",
-      "path": "system.text.encodings.web/7.0.0",
+      "path": "system.text.encodings.web/8.0.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -2431,27 +2471,31 @@
         "lib/net6.0/System.Text.Encodings.Web.xml",
         "lib/net7.0/System.Text.Encodings.Web.dll",
         "lib/net7.0/System.Text.Encodings.Web.xml",
+        "lib/net8.0/System.Text.Encodings.Web.dll",
+        "lib/net8.0/System.Text.Encodings.Web.xml",
         "lib/netstandard2.0/System.Text.Encodings.Web.dll",
         "lib/netstandard2.0/System.Text.Encodings.Web.xml",
         "runtimes/browser/lib/net6.0/System.Text.Encodings.Web.dll",
         "runtimes/browser/lib/net6.0/System.Text.Encodings.Web.xml",
         "runtimes/browser/lib/net7.0/System.Text.Encodings.Web.dll",
         "runtimes/browser/lib/net7.0/System.Text.Encodings.Web.xml",
-        "system.text.encodings.web.7.0.0.nupkg.sha512",
+        "runtimes/browser/lib/net8.0/System.Text.Encodings.Web.dll",
+        "runtimes/browser/lib/net8.0/System.Text.Encodings.Web.xml",
+        "system.text.encodings.web.8.0.0.nupkg.sha512",
         "system.text.encodings.web.nuspec",
         "useSharedDesignerContext.txt"
       ]
     },
-    "System.Text.Json/7.0.1": {
-      "sha512": "OtDEmCCiNl8JAduFKZ/r0Sw6XZNHwIicUYy/mXgMDGeOsZLshH37qi3oPRzFYiryVktiMoQLByMGPtRCEMYbeQ==",
+    "System.Text.Json/8.0.3": {
+      "sha512": "hpagS9joOwv6efWfrMmV9MjQXpiXZH72PgN067Ysfr6AWMSD1/1hEcvh/U5mUpPLezEWsOJSuVrmqDIVD958iA==",
       "type": "package",
-      "path": "system.text.json/7.0.1",
+      "path": "system.text.json/8.0.3",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "Icon.png",
         "LICENSE.TXT",
-        "README.md",
+        "PACKAGE.md",
         "THIRD-PARTY-NOTICES.TXT",
         "analyzers/dotnet/roslyn3.11/cs/System.Text.Json.SourceGeneration.dll",
         "analyzers/dotnet/roslyn3.11/cs/cs/System.Text.Json.SourceGeneration.resources.dll",
@@ -2506,9 +2550,11 @@
         "lib/net6.0/System.Text.Json.xml",
         "lib/net7.0/System.Text.Json.dll",
         "lib/net7.0/System.Text.Json.xml",
+        "lib/net8.0/System.Text.Json.dll",
+        "lib/net8.0/System.Text.Json.xml",
         "lib/netstandard2.0/System.Text.Json.dll",
         "lib/netstandard2.0/System.Text.Json.xml",
-        "system.text.json.7.0.1.nupkg.sha512",
+        "system.text.json.8.0.3.nupkg.sha512",
         "system.text.json.nuspec",
         "useSharedDesignerContext.txt"
       ]
@@ -2661,6 +2707,7 @@
   "projectFileDependencyGroups": {
     "net7.0": [
       "Microsoft.AspNetCore.OpenApi >= 7.0.12",
+      "Mscc.GenerativeAI >= 1.5.0",
       "MySql.Data >= 8.3.0",
       "OpenAI >= 1.11.0",
       "Swashbuckle.AspNetCore >= 6.5.0"
@@ -2714,6 +2761,10 @@
           "Microsoft.AspNetCore.OpenApi": {
             "target": "Package",
             "version": "[7.0.12, )"
+          },
+          "Mscc.GenerativeAI": {
+            "target": "Package",
+            "version": "[1.5.0, )"
           },
           "MySql.Data": {
             "target": "Package",

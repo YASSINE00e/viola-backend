@@ -113,3 +113,7 @@ E:\Work\Dev\Viola\viola-backend\obj\Debug\net7.0\ref\Viola.dll
 E:\Work\Dev\Viola\viola-backend\bin\Debug\net7.0\Microsoft.Bcl.AsyncInterfaces.dll
 E:\Work\Dev\Viola\viola-backend\bin\Debug\net7.0\Newtonsoft.Json.dll
 E:\Work\Dev\Viola\viola-backend\bin\Debug\net7.0\OpenAI_API.dll
+E:\Work\Dev\Viola\viola-backend\bin\Debug\net7.0\Mscc.GenerativeAI.dll
+E:\Work\Dev\Viola\viola-backend\bin\Debug\net7.0\System.Text.Encodings.Web.dll
+E:\Work\Dev\Viola\viola-backend\bin\Debug\net7.0\System.Text.Json.dll
+E:\Work\Dev\Viola\viola-backend\bin\Debug\net7.0\runtimes\browser\lib\net7.0\System.Text.Encodings.Web.dll

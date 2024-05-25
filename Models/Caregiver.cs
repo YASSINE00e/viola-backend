@@ -1,6 +1,4 @@
-﻿using System.Xml.Linq;
-
-namespace Viola.Models
+﻿namespace Viola.Models
 {
     public class Caregiver : Person
     {

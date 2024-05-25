@@ -9,7 +9,7 @@ namespace Viola.Models
         public string BloodType { get; set; }
         public float Weight { get; set; }
         public string CurrentLocation { get; set; }
-        public int HeartMonitor { get; set; }
+        public int HeartRate { get; set; }
         public string Movement { get; set; }
 
         public Patient(int id, string name, string surname, int age, string houseLocation, string bloodType, float weight, int hm, string mv)
@@ -19,7 +19,7 @@ namespace Viola.Models
             HouseLocation = houseLocation;
             BloodType = bloodType;
             Weight = weight;
-            HeartMonitor = hm;
+            HeartRate = hm;
             Movement = mv;
         }
     }
